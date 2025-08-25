@@ -14,6 +14,10 @@ class Auth extends CI_Controller {
         $this->load->library('session');
     }
 
+    // public function index() {
+    //     $this->load->view('auth/login');
+    // }
+
     public function login() {
         if ($this->input->post()) {
             $username = $this->input->post('username');

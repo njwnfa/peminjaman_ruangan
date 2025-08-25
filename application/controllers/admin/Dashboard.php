@@ -24,4 +24,9 @@ class Dashboard extends CI_Controller {
         $data['username'] = $this->session->userdata('username');
         $this->load->view('admin/dashboard', $data);
     }
+
+//     public function logout() {
+//         $this->session->sess_destroy();
+//         redirect('auth/logout');
+// }
 }
