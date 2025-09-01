@@ -14,21 +14,18 @@ class Auth extends CI_Controller {
         $this->load->library('session');
     }
 
-    // public function index() {
-    //     $this->load->view('auth/login');
-    // }
-
     public function login() {
         if ($this->input->post()) {
-            $username = $this->input->post('username');
+            $email = $this->input->post('email');
             $password = $this->input->post('password');
 
-            $user = $this->User_model->check_login($username, $password);
+            $user = $this->User_model->check_login($email, $password);
 
             if ($user) {
                 $this->session->set_userdata([
                     'user_id' => $user->id,
-                    'username' => $user->username,
+                    'nama' => $user->nama,
+                    'email' => $user->email,
                     'role' => $user->role,
                     'logged_in' => TRUE
                 ]);
@@ -36,10 +33,10 @@ class Auth extends CI_Controller {
                 if ($user->role == 'admin') {
                     redirect('admin/dashboard');
                 } else {
-                    redirect('user/dashboard');
+                    redirect(base_url());
                 }
             } else {
-                $this->session->set_flashdata('error', 'Username atau Password salah!');
+                $this->session->set_flashdata('error', 'Email atau Password salah!');
                 redirect('auth/login');
             }
         } else {
@@ -47,8 +44,33 @@ class Auth extends CI_Controller {
         }
     }
 
+    public function register() {
+        if ($this->input->post()) {
+            $data = [
+                'nama' => $this->input->post('nama'),
+                'email' => $this->input->post('email'),
+                'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT),
+                'role' => 'user'
+            ];
+
+            // cek email unik
+            if ($this->User_model->get_by_email($data['email'])) {
+                $this->session->set_flashdata('error', 'Email sudah terdaftar!');
+                redirect('auth/register');
+            } else {
+                $this->User_model->insert($data);
+                $this->session->set_flashdata('success', 'Pendaftaran berhasil, silakan login.');
+                redirect('auth/register'); 
+            }
+        } else {
+            $this->load->view('auth/register');
+        }
+    }
+
+
     public function logout() {
         $this->session->sess_destroy();
-        redirect('auth/login');
+        redirect(base_url());
     }
 }
+
