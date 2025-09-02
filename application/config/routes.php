@@ -52,3 +52,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'landing';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+// Dashboard Admin
+$route['admin/dashboard'] = 'admin/Dashboard/index';
+
+// Manage Ruangan (pakai controller Ruangan)
+$route['admin/ruangan'] = 'Ruangan/list_ruangan';
+$route['admin/ruangan/tambah'] = 'Ruangan/tambah';
+$route['admin/ruangan/store'] = 'Ruangan/store';
+$route['admin/ruangan/edit/(:num)'] = 'Ruangan/edit/$1';
+$route['admin/ruangan/update/(:num)'] = 'Ruangan/update/$1';
+$route['admin/ruangan/hapus/(:num)'] = 'Ruangan/hapus/$1';
