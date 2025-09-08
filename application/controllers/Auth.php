@@ -23,10 +23,10 @@ class Auth extends CI_Controller {
 
             if ($user) {
                 $this->session->set_userdata([
-                    'user_id' => $user->id,
-                    'nama' => $user->nama,
-                    'email' => $user->email,
-                    'role' => $user->role,
+                    'user_id'   => $user->id,
+                    'nama'      => $user->nama,
+                    'email'     => $user->email,
+                    'role'      => $user->role,
                     'logged_in' => TRUE
                 ]);
 
@@ -47,10 +47,10 @@ class Auth extends CI_Controller {
     public function register() {
         if ($this->input->post()) {
             $data = [
-                'nama' => $this->input->post('nama'),
-                'email' => $this->input->post('email'),
+                'nama'     => $this->input->post('nama'),
+                'email'    => $this->input->post('email'),
                 'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-                'role' => 'user'
+                'role'     => 'user'
             ];
 
             // cek email unik
@@ -60,17 +60,15 @@ class Auth extends CI_Controller {
             } else {
                 $this->User_model->insert($data);
                 $this->session->set_flashdata('success', 'Pendaftaran berhasil, silakan login.');
-                redirect('auth/register'); 
+                redirect('auth/login'); // ✅ lebih natural ke login
             }
         } else {
             $this->load->view('auth/register');
         }
     }
 
-
     public function logout() {
         $this->session->sess_destroy();
         redirect(base_url());
     }
 }
-

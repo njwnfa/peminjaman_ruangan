@@ -4,8 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class User_model extends CI_Model {
 
     public function check_login($email, $password) {
-        $this->db->where('email', $email);
-        $user = $this->db->get('users')->row();
+        $user = $this->get_by_email($email);
 
         if ($user && password_verify($password, $user->password)) {
             return $user;

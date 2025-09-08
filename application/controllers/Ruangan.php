@@ -18,13 +18,20 @@ class Ruangan extends CI_Controller {
 
     // Halaman daftar ruangan
     public function list_ruangan() {
-        $data['list_ruangan'] = $this->Ruangan_model->getAll(); // ubah ke list_ruangan
+        $allRuangan = $this->Ruangan_model->getAll();
         $data['title']   = "Daftar Ruangan";
         $data['active']  = "ruangan";
 
-        // $this->load->view('layouts/header', $data);
-        $this->load->view('admin/manage-ruangan/index', $data);
-        // $this->load->view('layouts/footer');
+        if ($this->session->userdata('role') == 'admin') {
+            $data['list_ruangan'] = $allRuangan;
+            $this->load->view('admin/manage-ruangan/index', $data);
+        } else {
+            // kalau role = user, pakai view user
+            $data['ruangan'] = $allRuangan; // user
+            $this->load->view('layouts/header', $data);
+            $this->load->view('ruangan/list_ruangan', $data);
+            $this->load->view('layouts/footer');
+        }
     }
 
     // Form tambah ruangan
@@ -120,7 +127,33 @@ class Ruangan extends CI_Controller {
         if (!$ruangan) {
             show_404();
         }
-        // sementara hanya tampilkan pesan
-        echo "Form ajukan ruangan dengan ID: ".$id;
+
+        $data['title']   = "Ajukan Peminjaman";
+        $data['ruangan'] = $ruangan;
+
+        $this->load->view('layouts/header', $data);
+        $this->load->view('ruangan/form_peminjaman', $data);
+        $this->load->view('layouts/footer');
+    }
+
+    // Simpan data peminjaman
+    public function store_peminjaman() {
+        $this->load->model('Peminjaman_model');
+
+        $data = [
+            'ruangan_id'     => $this->input->post('ruangan_id'),
+            'user_id'        => $this->session->userdata('user_id'),
+            'nama_lengkap'   => $this->input->post('nama_lengkap'),
+            'nim'            => $this->input->post('nim'),
+            'prodi'          => $this->input->post('prodi'),
+            'nama_dosen'     => $this->input->post('nama_dosen'),
+            'tanggal_mulai'  => $this->input->post('tanggal_mulai'),
+            'tanggal_selesai'=> $this->input->post('tanggal_selesai'),
+            'status'         => 'pending'
+        ];
+
+        $this->Peminjaman_model->insert($data);
+        $this->session->set_flashdata('success', 'Peminjaman berhasil diajukan. Menunggu persetujuan admin.');
+        redirect('ruangan/list_ruangan');
     }
 }

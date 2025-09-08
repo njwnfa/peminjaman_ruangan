@@ -15,6 +15,11 @@
       class="flex items-center gap-3 px-4 py-2 rounded-lg <?= ($active=='ruangan'?'bg-blue-600 text-white':'text-gray-700 hover:bg-gray-100') ?>">
       <i class="fas fa-door-open"></i> Ruangan
     </a>
+    <a href="<?= base_url('admin/peminjaman'); ?>" 
+      class="flex items-center gap-3 px-4 py-2 rounded-lg <?= ($active=='peminjaman'?'bg-blue-600 text-white':'text-gray-700 hover:bg-gray-100') ?>">
+      <i class="fas fa-clipboard-check"></i> Validasi Peminjaman
+    </a>
+
 
     <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg <?= ($active=='kas'?'bg-blue-600 text-white':'text-gray-700 hover:bg-gray-100') ?>">
       <i class="fas fa-chart-line"></i> Rekap Bulanan
