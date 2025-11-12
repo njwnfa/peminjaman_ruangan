@@ -50,7 +50,8 @@
 
         <?php if($this->session->userdata('logged_in')): ?>
           <!-- Menu tambahan hanya muncul kalau sudah login -->
-          <a href="<?= base_url('ruangan/list_ruangan') ?>" class="hover:text-indigo-600 transition">Daftar Ruangan</a>
+          <a href="<?= base_url('ruangan') ?>" class="hover:text-indigo-600 transition">Daftar Ruangan</a>
+          <a href="<?= base_url('ruangan/status') ?>" class="hover:text-indigo-600 transition">Status Pengajuan</a>
         <?php endif; ?>
       </div>
 

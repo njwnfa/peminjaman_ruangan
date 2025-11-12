@@ -36,7 +36,8 @@
 
         <?php if($this->session->userdata('logged_in')): ?>
           <!-- Menu tambahan hanya muncul kalau sudah login -->
-          <a href="<?= base_url('ruangan/list_ruangan') ?>" class="hover:text-indigo-600 transition">Daftar Ruangan</a>
+          <a href="<?= base_url('ruangan') ?>" class="hover:text-indigo-600 transition">Daftar Ruangan</a>
+          <a href="<?= base_url('ruangan/status') ?>" class="hover:text-indigo-600 transition">Status Pengajuan</a>
         <?php endif; ?>
       </div>
 
@@ -70,3 +71,33 @@
       </div>
     </div>
   </nav>
+
+  <script>
+    // Toggle dropdown user
+    function toggleDropdown() {
+      const dropdown = document.getElementById('userDropdown');
+      dropdown.classList.toggle('hidden');
+    }
+
+    // Tutup dropdown saat klik di luar
+    window.addEventListener('click', function(e) {
+      const dropdown = document.getElementById('userDropdown');
+      const button = e.target.closest('button[onclick="toggleDropdown()"]');
+      if (!button && !dropdown.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
+    // Toggle dark mode
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      lucide.createIcons(); // redraw icon karena sun/moon berubah
+    }
+
+    // Inisialisasi icon saat halaman load
+    lucide.createIcons();
+  </script>
+
+</body>

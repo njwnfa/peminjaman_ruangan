@@ -53,13 +53,26 @@ $route['default_controller'] = 'landing';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-// Dashboard Admin
-$route['admin/dashboard'] = 'admin/Dashboard/index';
+// dashboard
+$route['dashboard'] = 'admin/Dashboard/index';
 
-// Manage Ruangan (pakai controller Ruangan)
-$route['admin/ruangan'] = 'Ruangan/list_ruangan';
-$route['admin/ruangan/tambah'] = 'Ruangan/tambah';
-$route['admin/ruangan/store'] = 'Ruangan/store';
-$route['admin/ruangan/edit/(:num)'] = 'Ruangan/edit/$1';
-$route['admin/ruangan/update/(:num)'] = 'Ruangan/update/$1';
-$route['admin/ruangan/hapus/(:num)'] = 'Ruangan/hapus/$1';
+// user
+$route['user'] = 'user/index';
+$route['user/add'] = 'user/add';
+$route['user/delete/(:num)'] = 'user/delete/$1';
+$route['user/update_role/(:num)'] = 'user/update_role/$1';
+
+// ROUTES ADMIN RUANGAN
+$route['admin/ruangan'] = 'admin/Ruangan/index';
+$route['admin/ruangan/add'] = 'admin/Ruangan/add';
+$route['admin/ruangan/update/(:num)'] = 'admin/Ruangan/update/$1';
+$route['admin/ruangan/delete/(:num)'] = 'admin/Ruangan/delete/$1';
+
+// Rute untuk Halaman Validasi Peminjaman Admin
+$route['admin/peminjaman'] = 'admin/peminjaman/index';
+$route['admin/peminjaman/approve/(:num)'] = 'admin/peminjaman/approve/$1';
+$route['admin/peminjaman/reject/(:num)'] = 'admin/peminjaman/reject/$1';
+
+// user
+$route['ruangan'] = 'ruangan/index';
+$route['ruangan/store_peminjaman'] = 'ruangan/store_peminjaman';

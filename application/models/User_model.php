@@ -19,4 +19,21 @@ class User_model extends CI_Model {
     public function get_by_email($email) {
         return $this->db->get_where('users', ['email' => $email])->row();
     }
+    
+    public function get_all_users() {
+        return $this->db->order_by('created_at', 'DESC')->get('users')->result();
+    }
+
+    public function get_by_id($id) {
+        return $this->db->get_where('users', ['id' => $id])->row();
+    }
+
+    public function update($id, $data) {
+        return $this->db->where('id', $id)->update('users', $data);
+    }
+
+    public function delete($id) {
+        return $this->db->where('id', $id)->delete('users');
+    }
+
 }

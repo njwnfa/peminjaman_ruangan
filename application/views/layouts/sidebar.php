@@ -5,10 +5,11 @@
     <span class="font-semibold text-gray-700">Pilates</span>
   </div>
   <nav class="px-4 py-6 space-y-2">
-    <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg <?= ($active=='dashboard'?'bg-blue-600 text-white':'text-gray-700 hover:bg-gray-100') ?>">
+    <a href="<?= base_url('dashboard'); ?>" class="flex items-center gap-3 px-4 py-2 rounded-lg <?= ($active=='dashboard'?'bg-blue-600 text-white':'text-gray-700 hover:bg-gray-100') ?>">
       <i class="fas fa-home"></i> Dashboard
     </a>
-    <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg <?= ($active=='kasir'?'bg-blue-600 text-white':'text-gray-700 hover:bg-gray-100') ?>">
+    <a href="<?= base_url('user'); ?>" 
+       class="flex items-center gap-3 px-4 py-2 rounded-lg <?= ($active=='user'?'bg-blue-600 text-white':'text-gray-700 hover:bg-gray-100') ?>">
       <i class="fas fa-user"></i> Users
     </a>
     <a href="<?= base_url('admin/ruangan'); ?>" 
@@ -21,7 +22,7 @@
     </a>
 
 
-    <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg <?= ($active=='kas'?'bg-blue-600 text-white':'text-gray-700 hover:bg-gray-100') ?>">
+    <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg <?= ($active=='rekap'?'bg-blue-600 text-white':'text-gray-700 hover:bg-gray-100') ?>">
       <i class="fas fa-chart-line"></i> Rekap Bulanan
     </a>
   </nav>
