@@ -27,8 +27,6 @@ class Peminjaman_model extends CI_Model {
         
         $this->db->where('id_ruangan', $id_ruangan);
         
-        // Kita hanya cek jadwal yang masih aktif (menunggu atau disetujui)
-        // Jadwal yang 'ditolak' atau 'selesai' bisa ditimpa
         $this->db->where_in('status', ['menunggu', 'disetujui']);
 
         // Logika Pengecekan Overlap (Bentrok):
@@ -48,10 +46,13 @@ class Peminjaman_model extends CI_Model {
         $this->db->select('peminjaman.*, users.nama as nama_peminjam, ruangan.nama_ruangan');
         $this->db->from($this->_table);
         $this->db->join('users', 'users.id = peminjaman.id_user');
-        
-        // INI ADALAH BARIS YANG DIPERBAIKI (Line 51)
         $this->db->join('ruangan', 'ruangan.id_ruangan = peminjaman.id_ruangan');
         
+        // ==== TAMBAHKAN BARIS INI ====
+        // Hanya tampilkan yang statusnya 'menunggu' atau 'disetujui'
+        $this->db->where_in('peminjaman.status', ['menunggu', 'disetujui']);
+        // =============================
+
         // 1. Prioritaskan status 'menunggu' (diberi nilai 1)
         $this->db->order_by("CASE WHEN peminjaman.status = 'menunggu' THEN 1 ELSE 2 END", "ASC");
         
@@ -80,5 +81,24 @@ class Peminjaman_model extends CI_Model {
     public function update($id, $data) {
         $this->db->where('id_peminjaman', $id);
         return $this->db->update($this->_table, $data);
+    }
+
+    public function get_rekap_by_filter($bulan, $tahun) {
+        $this->db->select('peminjaman.*, users.nama as nama_peminjam, ruangan.nama_ruangan');
+        $this->db->from($this->_table);
+        $this->db->join('users', 'users.id = peminjaman.id_user');
+        $this->db->join('ruangan', 'ruangan.id_ruangan = peminjaman.id_ruangan');
+        
+        // Filter utama: SELESAI ATAU DITOLAK
+        $this->db->where_in('peminjaman.status', ['selesai', 'ditolak']); // <-- INI PERUBAHANNYA
+        
+        // Filter Waktu (Kita filter berdasarkan KAPAN DIAJUKAN, bukan kapan selesai)
+        $this->db->where('MONTH(peminjaman.created_at)', $bulan);
+        $this->db->where('YEAR(peminjaman.created_at)', $tahun);
+        
+        $this->db->order_by('peminjaman.created_at', 'DESC'); // Urutkan berdasarkan tanggal pengajuan
+        
+        $query = $this->db->get();
+        return $query->result();
     }
 }

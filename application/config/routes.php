@@ -72,6 +72,10 @@ $route['admin/ruangan/delete/(:num)'] = 'admin/Ruangan/delete/$1';
 $route['admin/peminjaman'] = 'admin/peminjaman/index';
 $route['admin/peminjaman/approve/(:num)'] = 'admin/peminjaman/approve/$1';
 $route['admin/peminjaman/reject/(:num)'] = 'admin/peminjaman/reject/$1';
+$route['admin/peminjaman/finish/(:num)'] = 'admin/peminjaman/finish/$1';
+
+// Rute Rekap
+$route['admin/rekap'] = 'admin/rekap/index';
 
 // user
 $route['ruangan'] = 'ruangan/index';

@@ -87,22 +87,30 @@
                     </td>
                     
                     <td class="px-4 py-2 border text-center">
-                      <?php if ($p->status == 'menunggu'): ?>
-                        <div class="flex justify-center space-x-2">
-                           <a href="<?= base_url('admin/peminjaman/approve/'.$p->id_peminjaman); ?>" 
-                             onclick="return confirm('Yakin ingin MENYETUJUI peminjaman ini?')" 
-                             class="px-3 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600">
-                             <i class="fas fa-check"></i> Setujui
+                        <?php if ($p->status == 'menunggu'): ?>
+                          <div class="flex justify-center space-x-2">
+                            <a href="<?= base_url('admin/peminjaman/approve/'.$p->id_peminjaman); ?>" 
+                               onclick="return confirm('Yakin ingin MENYETUJUI peminjaman ini?')" 
+                               class="px-3 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600">
+                               <i class="fas fa-check"></i> Setujui
+                            </a>
+                            <button onclick="openRejectModal(<?= $p->id_peminjaman; ?>)" 
+                               class="px-3 py-1 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700">
+                               <i class="fas fa-times"></i> Tolak
+                            </button>
+                          </div>
+                        
+                        <?php elseif ($p->status == 'disetujui'): ?>
+                          <a href="<?= base_url('admin/peminjaman/finish/'.$p->id_peminjaman); ?>" 
+                             onclick="return confirm('Yakin ingin MENYELESAIKAN peminjaman ini? Status ruangan akan dikembalikan.')" 
+                             class="px-3 py-1 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">
+                             <i class="fas fa-flag-checkered"></i> Selesai
                           </a>
-                          <button onclick="openRejectModal(<?= $p->id_peminjaman; ?>)" 
-                             class="px-3 py-1 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700">
-                             <i class="fas fa-times"></i> Tolak
-                          </button>
-                        </div>
-                      <?php else: ?>
-                        <span classD="text-gray-400 italic text-sm">-</span>
-                      <?php endif; ?>
-                    </td>
+                        
+                        <?php else: ?>
+                          <span class="text-gray-400 italic text-sm">-</span>
+                        <?php endif; ?>
+                      </td>
 
                   </tr>
                   

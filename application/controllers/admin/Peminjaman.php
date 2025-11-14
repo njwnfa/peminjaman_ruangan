@@ -101,4 +101,36 @@ class Peminjaman extends CI_Controller {
         // Penting: Saat ditolak, status ruangan TIDAK berubah.
         redirect('admin/peminjaman');
     }
+
+    public function finish($id_peminjaman) {
+        // 1. Dapatkan data peminjaman untuk tahu id_ruangan
+        $peminjaman = $this->Peminjaman_model->get_by_id($id_peminjaman);
+
+        if (!$peminjaman || $peminjaman->status != 'disetujui') {
+            $this->session->set_flashdata('error', 'Data peminjaman tidak valid atau status bukan disetujui.');
+            redirect('admin/peminjaman');
+        }
+
+        // 2. Data untuk update tabel peminjaman
+        $data_peminjaman = [
+            'status' => 'selesai'
+        ];
+
+        // 3. Data untuk update tabel ruangan (KEMBALIKAN JADI TERSEDIA)
+        $data_ruangan = [
+            'status' => 'tersedia' 
+        ];
+
+        // 4. Lakukan update
+        $update_peminjaman = $this->Peminjaman_model->update($id_peminjaman, $data_peminjaman);
+        $update_ruangan = $this->Ruangan_model->update($peminjaman->id_ruangan, $data_ruangan);
+
+        if ($update_peminjaman && $update_ruangan) {
+            $this->session->set_flashdata('success', 'Peminjaman telah diselesaikan. Status ruangan dikembalikan.');
+        } else {
+            $this->session->set_flashdata('error', 'Gagal memperbarui status.');
+        }
+
+        redirect('admin/peminjaman');
+    }
 }
