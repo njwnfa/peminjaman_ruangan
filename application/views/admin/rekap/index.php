@@ -11,10 +11,75 @@
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/customParseFormat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/id.js"></script>
+  
   <script>
     dayjs.extend(dayjs.plugin.customParseFormat);
     dayjs.locale('id');
   </script>
+  <style>
+    @media print {
+        body {
+            background: white !important;
+            color: black !important;
+        }
+
+        /* Hilangkan sidebar, topbar, tombol, form filter */
+        aside,
+        nav,
+        .no-print,
+        form,
+        button {
+            display: none !important;
+        }
+
+        /* Area utama full width saat print */
+        main {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header laporan */
+        .print-header {
+            display: block !important;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .print-header h2 {
+            font-size: 20px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .print-header p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Tabel */
+        table {
+            border-collapse: collapse !important;
+            width: 100%;
+            font-size: 12px !important;
+        }
+
+        table th, table td {
+            border: 1px solid #000 !important;
+            padding: 6px !important;
+        }
+
+        table thead {
+            background: #e5e5e5 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Hilangkan background Tailwind saat print */
+        .bg-gray-50, .bg-gray-100, .bg-white {
+            background: white !important;
+        }
+    }
+  </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
@@ -27,7 +92,7 @@
     <main class="p-6">
       <div class="bg-white shadow rounded-xl p-6">
         
-        <h1 class="text-2xl font-bold mb-4"><?= $title; ?></h1>
+        <h1 class="text-2xl font-bold mb-4 no-print"><?= $title; ?></h1>
 
         <form action="<?= base_url('admin/rekap'); ?>" method="POST" class="flex items-center space-x-4 mb-4 p-4 bg-gray-50 rounded-lg">
             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
@@ -55,10 +120,25 @@
                 <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700">
                     <i class="fas fa-filter"></i> Tampilkan
                 </button>
+
+                <button onclick="window.print()" class="no-print px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition duration-200">
+                    <i class="fas fa-print"></i> Cetak
+                </button>
             </div>
         </form>
-        <div class="overflow-x-auto">
-          <table class="w-full border border-gray-200 rounded-lg overflow-hidden">
+
+        <div class="print-header hidden">
+            <h2>REKAP PEMINJAMAN RUANGAN</h2>
+            <p>Periode: <?= strftime('%B', mktime(0, 0, 0, $filter_bulan, 1)); ?> <?= $filter_tahun; ?></p>
+            <p>Pilates</p>
+            <br>
+        </div>
+
+
+        <div id="rekap_table" class="overflow-x-auto">
+            <table class="w-full border border-gray-300 rounded-lg overflow-hidden">
+
+
             <thead class="bg-gray-100">
               <tr>
                 <th class="px-4 py-3 border text-center">#</th>
@@ -109,5 +189,86 @@
     </main>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // 1. Skrip Pemformatan Tanggal (Perbaikan)
+    // Loop semua elemen dengan atribut 'data-created-at'
+    document.querySelectorAll('[data-created-at]').forEach(function(element) {
+        // Ambil timestamp dari atribut
+        var timestamp = element.getAttribute('data-created-at');
+        if (timestamp) {
+            // Format menggunakan dayjs dan perbarui teks di dalam <td>
+            element.innerText = dayjs(timestamp, 'YYYY-MM-DD HH:mm:ss').format('dddd, D MMMM YYYY (HH:mm)');
+        }
+    });
+
+    // 2. Skrip untuk Tombol Download
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        // Ambil HTML dari tabel
+        var tableHtml = document.getElementById('rekap_table_element').outerHTML;
+        
+        // Buat template HTML untuk file Excel
+        var template = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office"
+                  xmlns:x="urn:schemas-microsoft-com:office:excel"
+                  xmlns="http://www.w3.org/TR/REC-html40">
+            <head>
+                <!--[if gte mso 9]>
+                <xml>
+                    <x:ExcelWorkbook>
+                        <x:ExcelWorksheets>
+                            <x:ExcelWorksheet>
+                                <x:Name>Rekap Peminjaman</x:Name>
+                                <x:WorksheetOptions>
+                                    <x:DisplayGridlines/>
+                                </x:WorksheetOptions>
+                            </x:ExcelWorksheet>
+                        </x:ExcelWorksheets>
+                    </x:ExcelWorkbook>
+                </xml>
+                <![endif]-->
+                <meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
+                <style>
+                    table { border-collapse: collapse; }
+                    td, th { border: 1px solid #999; padding: 5px; }
+                </style>
+            </head>
+            <body>
+                <h3>Rekap Peminjaman</h3>
+                <h4>Periode: <?= strftime('%B', mktime(0, 0, 0, $filter_bulan, 1)); ?> <?= $filter_tahun; ?></h4>
+                ${tableHtml}
+            </body>
+            </html>`;
+        
+        // Buat nama file
+        var filename = 'Rekap_Peminjaman_<?= strftime('%B', mktime(0, 0, 0, $filter_bulan, 1)); ?>_<?= $filter_tahun; ?>.xls';
+        
+        // Buat Blob
+        var blob = new Blob([template], {
+            type: 'application/vnd.ms-excel'
+        });
+        
+        // Buat link download sementara
+        if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, filename);
+        } else {
+            var a = document.createElement('a');
+            var url = URL.createObjectURL(blob);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            
+            // Hapus link setelah di-klik
+            setTimeout(function() {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+    });
+
+});
+</script>
 </body>
 </html>

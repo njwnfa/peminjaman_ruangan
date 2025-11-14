@@ -41,6 +41,13 @@
           </div>
         <?php endif; ?>
 
+        <div class="flex justify-between mb-3">
+          <input id="searchInput" 
+                type="text" 
+                placeholder="Cari peminjam..." 
+                class="px-3 py-2 border rounded-lg w-1/3 shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+        </div>
+
         <div class="overflow-x-auto">
           <table class="w-full border border-gray-200 rounded-lg overflow-hidden">
             <thead class="bg-gray-100">
@@ -129,6 +136,15 @@
               <?php endif; ?>
             </tbody>
           </table>
+
+          <div class="flex justify-between items-center mt-5">
+            <span id="infoText" class="text-sm text-gray-600">
+              Menampilkan 10 data per halaman
+            </span>
+
+            <div id="pagination" class="flex space-x-2"></div>
+          </div>
+
         </div>
       </div>
     </main>
@@ -167,6 +183,66 @@
   function closeRejectModal() {
     document.getElementById('rejectModal').classList.add('hidden');
   }
+
+  const rows = document.querySelectorAll("tbody tr");
+  const rowsPerPage = 10;
+  let currentPage = 1;
+
+  function displayRows() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    let filtered = [];
+
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      row.style.display = text.includes(search) ? "" : "none";
+      if (text.includes(search)) filtered.push(row);
+    });
+
+    const totalPages = Math.ceil(filtered.length / rowsPerPage);
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    filtered.forEach((row, index) => {
+      row.style.display = (index >= start && index < end) ? "" : "none";
+    });
+
+    updateInfo(filtered.length);
+    generatePagination(totalPages);
+  }
+
+  function updateInfo(totalFiltered) {
+    const info = document.getElementById("infoText");
+    info.innerText = `Menampilkan ${rowsPerPage} data per halaman (hasil cocok: ${totalFiltered})`;
+  }
+
+  function generatePagination(total) {
+    const container = document.getElementById("pagination");
+    container.innerHTML = "";
+
+    for (let i = 1; i <= total; i++) {
+      const btn = document.createElement("button");
+      btn.innerText = i;
+      btn.className =
+        "px-3 py-1 rounded-lg border shadow-sm transition " +
+        (i === currentPage
+          ? "bg-blue-600 text-white border-blue-700 shadow-md"
+          : "bg-white hover:bg-gray-100 text-gray-700");
+
+      btn.onclick = () => {
+        currentPage = i;
+        displayRows();
+      };
+
+      container.appendChild(btn);
+    }
+  }
+
+  document.getElementById("searchInput").addEventListener("keyup", () => {
+    currentPage = 1;
+    displayRows();
+  });
+
+  displayRows();
 </script>
 
 </body>

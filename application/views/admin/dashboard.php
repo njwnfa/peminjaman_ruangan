@@ -28,8 +28,8 @@
         <div class="bg-white shadow rounded-xl p-5 flex items-center justify-between">
           <div>
             <h6 class="text-sm text-gray-500">DATA USER</h6>
-            <h5 class="text-xl font-bold">0</h5>
-            <a href="#" class="text-blue-600 text-sm hover:underline">Lihat Detail &gt;</a>
+            <h5 class="text-xl font-bold"><?= $total_user; ?></h5>
+            <a href="<?= base_url('user'); ?>" class="text-blue-600 text-sm hover:underline">Lihat Detail &gt;</a>
           </div>
           <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 text-white">
             <i class="fas fa-user"></i>
@@ -40,8 +40,8 @@
         <div class="bg-white shadow rounded-xl p-5 flex items-center justify-between">
           <div>
             <h6 class="text-sm text-gray-500">DATA RUANGAN</h6>
-            <h5 class="text-xl font-bold">0</h5>
-            <a href="#" class="text-blue-600 text-sm hover:underline">Lihat Detail &gt;</a>
+            <h5 class="text-xl font-bold"><?= $total_ruangan; ?></h5>
+            <a href="<?= base_url('admin/ruangan'); ?>" class="text-blue-600 text-sm hover:underline">Lihat Detail &gt;</a>
           </div>
           <div class="w-12 h-12 flex items-center justify-center rounded-full bg-green-600 text-white">
             <i class="fas fa-door-open"></i>
@@ -51,9 +51,21 @@
         <!-- Card 3 -->
         <div class="bg-white shadow rounded-xl p-5 flex items-center justify-between">
           <div>
+            <h6 class="text-sm text-gray-500">PEMINJAMAN</h6>
+            <h5 class="text-xl font-bold"><?= $total_peminjaman; ?></h5>
+            <a href="<?= base_url('admin/peminjaman'); ?>" class="text-blue-600 text-sm hover:underline">Lihat Detail &gt;</a>
+          </div>
+          <div class="w-12 h-12 flex items-center justify-center rounded-full bg-green-600 text-white">
+            <i class="fas fa-clipboard-check"></i>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="bg-white shadow rounded-xl p-5 flex items-center justify-between">
+          <div>
             <h6 class="text-sm text-gray-500">REKAP BULANAN</h6>
-            <h5 class="text-xl font-bold">0</h5>
-            <a href="#" class="text-blue-600 text-sm hover:underline">Lihat Detail &gt;</a>
+            <h5 class="text-xl font-bold"><?= $total_rekap; ?></h5>
+            <a href="<?= base_url('admin/rekap'); ?>" class="text-blue-600 text-sm hover:underline">Lihat Detail &gt;</a>
           </div>
           <div class="w-12 h-12 flex items-center justify-center rounded-full bg-yellow-500 text-white">
             <i class="fas fa-chart-line"></i>

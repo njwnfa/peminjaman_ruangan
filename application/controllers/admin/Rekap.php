@@ -2,16 +2,15 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * @property CI_Session $session
- * @property CI_Input $input
- * @property Peminjaman_model $Peminjaman_model
+ * @property CI_Session 
+ * @property CI_Input 
+ * @property Peminjaman_model 
  */
 class Rekap extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
 
-        // Security check
         if ($this->session->userdata('role') != 'admin') {
             $this->session->set_flashdata('error', 'Akses ditolak. Silakan login sebagai admin.');
             redirect('auth/login');
@@ -25,7 +24,7 @@ class Rekap extends CI_Controller {
      */
     public function index() {
         $data['title'] = 'Rekap Peminjaman Selesai';
-        $data['active'] = 'rekap'; // Untuk sidebar
+        $data['active'] = 'rekap';
 
         // Ambil filter dari POST/GET, jika tidak ada, gunakan bulan & tahun ini
         $data['filter_bulan'] = $this->input->post('bulan') ?? date('m');
@@ -38,10 +37,8 @@ class Rekap extends CI_Controller {
         );
         
         // Kirim data tahun-tahun ke view untuk dropdown
-        // (Misal: 5 tahun ke belakang)
         $data['list_tahun'] = range(date('Y'), date('Y') - 5);
 
-        // Kita gunakan view utuh (bukan template header/footer)
         $this->load->view('admin/rekap/index', $data);
     }
 }

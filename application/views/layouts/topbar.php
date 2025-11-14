@@ -1,5 +1,5 @@
 <!-- Topbar -->
-<header class="flex items-center justify-between bg-white px-6 py-3 border-b shadow-sm">
+<header class="no-print flex items-center justify-between bg-white px-6 py-3 border-b shadow-sm">
   <div class="flex items-center gap-3">
     <!-- Tombol menu mobile -->
     <button class="lg:hidden text-gray-700"><i class="fas fa-bars"></i></button>
