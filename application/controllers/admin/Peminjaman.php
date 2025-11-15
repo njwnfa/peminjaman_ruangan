@@ -2,11 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * @property CI_Session $session
- * @property CI_Input $input
- * @property CI_Form_validation $form_validation
- * @property Peminjaman_model $Peminjaman_model
- * @property Ruangan_model $Ruangan_model
+ * @property CI_Session 
+ * @property CI_Input 
+ * @property CI_Form_validation 
+ * @property Peminjaman_model 
+ * @property Ruangan_model 
+ * @property CI_DB
  */
 class Peminjaman extends CI_Controller {
 
@@ -41,7 +42,7 @@ class Peminjaman extends CI_Controller {
      * Aksi untuk Menyetujui Peminjaman
      */
     public function approve($id_peminjaman) {
-        // 1. Dapatkan data peminjaman untuk tahu id_ruangan
+
         $peminjaman = $this->Peminjaman_model->get_by_id($id_peminjaman);
 
         if (!$peminjaman) {
@@ -49,26 +50,39 @@ class Peminjaman extends CI_Controller {
             redirect('admin/peminjaman');
         }
 
-        // 2. Data untuk update tabel peminjaman
-        $data_peminjaman = [
-            'status' => 'disetujui'
-        ];
+        // Ambil data user peminjam
+        $user = $this->db->get_where('users', ['id' => $peminjaman->id_user])->row();
 
-        // 3. Data untuk update tabel ruangan
-        $data_ruangan = [
-            'status' => 'dipinjam' // Ubah status ruangan
-        ];
+        $data_peminjaman = ['status' => 'disetujui'];
+        $data_ruangan = ['status' => 'dipinjam'];
 
-        // 4. Lakukan update
-        // Kita gunakan '&&' agar jika salah satu gagal, notif error muncul
         $update_peminjaman = $this->Peminjaman_model->update($id_peminjaman, $data_peminjaman);
         $update_ruangan = $this->Ruangan_model->update($peminjaman->id_ruangan, $data_ruangan);
 
         if ($update_peminjaman && $update_ruangan) {
+
+            if (!empty($user->telegram_chat_id)) {
+
+                $mulai  = format_tanggal_indonesia($peminjaman->tanggal_mulai);
+                $selesai = format_tanggal_indonesia($peminjaman->tanggal_selesai);
+
+                $pesan = 
+        "🎉 *Peminjaman Ruangan Disetujui!*
+
+        📌 *Ruangan:* <b>{$peminjaman->nama_ruangan}</b>
+        📅 *Waktu:* 
+        - Mulai: <b>$mulai</b>
+        - Selesai: <b>$selesai</b>
+
+        Terima kasih telah menggunakan layanan Pilates.";
+
+                send_telegram_message($user->telegram_chat_id, $pesan);
+            }
+
             $this->session->set_flashdata('success', 'Peminjaman berhasil disetujui.');
-        } else {
-            $this->session->set_flashdata('error', 'Gagal memperbarui status.');
-        }
+            } else {
+                $this->session->set_flashdata('error', 'Gagal memperbarui status.');
+            }
 
         redirect('admin/peminjaman');
     }
@@ -77,28 +91,52 @@ class Peminjaman extends CI_Controller {
      * Aksi untuk Menolak Peminjaman
      */
     public function reject($id_peminjaman) {
-        // Validasi input dari modal
+
         $this->form_validation->set_rules('catatan_admin', 'Alasan Penolakan', 'required|trim');
 
         if ($this->form_validation->run() == FALSE) {
-            // Jika admin tidak mengisi alasan
-            $this->session->set_flashdata('error', 'Gagal menolak. Alasan penolakan wajib diisi.');
+            $this->session->set_flashdata('error', 'Gagal menolak. Alasan wajib diisi.');
         } else {
-            // Jika validasi sukses
+
+            $peminjaman = $this->Peminjaman_model->get_by_id($id_peminjaman);
+            $user = $this->db->get_where('users', ['id' => $peminjaman->id_user])->row();
+
             $data_peminjaman = [
                 'status' => 'ditolak',
                 'catatan_admin' => $this->input->post('catatan_admin')
             ];
 
-            // Update data peminjaman
             if ($this->Peminjaman_model->update($id_peminjaman, $data_peminjaman)) {
+
+                if (!empty($user->telegram_chat_id)) {
+
+                    $mulai  = format_tanggal_indonesia($peminjaman->tanggal_mulai);
+                    $selesai = format_tanggal_indonesia($peminjaman->tanggal_selesai);
+
+                    $alasan = $this->input->post('catatan_admin');
+
+                    $pesan = 
+            "❌ *Peminjaman Ruangan Ditolak*
+
+            📌 *Ruangan:* <b>{$peminjaman->nama_ruangan}</b>
+            📅 *Waktu:* 
+            - Mulai: <b>$mulai</b>
+            - Selesai: <b>$selesai</b>
+
+            📝 *Alasan Penolakan:*  
+            _" . $alasan . "_
+
+            Silakan ajukan kembali bila diperlukan.";
+
+                    send_telegram_message($user->telegram_chat_id, $pesan);
+                }
+
                 $this->session->set_flashdata('success', 'Peminjaman telah ditolak.');
             } else {
                 $this->session->set_flashdata('error', 'Gagal memperbarui status.');
             }
         }
-        
-        // Penting: Saat ditolak, status ruangan TIDAK berubah.
+
         redirect('admin/peminjaman');
     }
 

@@ -50,7 +50,8 @@ class Auth extends CI_Controller {
                 'nama'     => $this->input->post('nama'),
                 'email'    => $this->input->post('email'),
                 'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-                'role'     => 'user'
+                'role'     => 'user',
+                'telegram_chat_id' => $this->input->post('telegram_chat_id') ?: NULL
             ];
 
             // cek email unik

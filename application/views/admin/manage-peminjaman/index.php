@@ -14,6 +14,7 @@
     dayjs.extend(dayjs.plugin.customParseFormat);
     dayjs.locale('id');
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
@@ -96,11 +97,10 @@
                     <td class="px-4 py-2 border text-center">
                         <?php if ($p->status == 'menunggu'): ?>
                           <div class="flex justify-center space-x-2">
-                            <a href="<?= base_url('admin/peminjaman/approve/'.$p->id_peminjaman); ?>" 
-                               onclick="return confirm('Yakin ingin MENYETUJUI peminjaman ini?')" 
-                               class="px-3 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600">
-                               <i class="fas fa-check"></i> Setujui
-                            </a>
+                            <button type="button" onclick="confirmApprove(<?= $p->id_peminjaman; ?>)" 
+                                 class="px-3 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600">
+                                 <i class="fas fa-check"></i> Setujui
+                               </button>
                             <button onclick="openRejectModal(<?= $p->id_peminjaman; ?>)" 
                                class="px-3 py-1 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700">
                                <i class="fas fa-times"></i> Tolak
@@ -108,11 +108,10 @@
                           </div>
                         
                         <?php elseif ($p->status == 'disetujui'): ?>
-                          <a href="<?= base_url('admin/peminjaman/finish/'.$p->id_peminjaman); ?>" 
-                             onclick="return confirm('Yakin ingin MENYELESAIKAN peminjaman ini? Status ruangan akan dikembalikan.')" 
-                             class="px-3 py-1 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">
-                             <i class="fas fa-flag-checkered"></i> Selesai
-                          </a>
+                            <button type="button" onclick="confirmFinish(<?= $p->id_peminjaman; ?>)" 
+                              class="px-3 py-1 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">
+                              <i class="fas fa-flag-checkered"></i> Selesai
+                            </button>
                         
                         <?php else: ?>
                           <span class="text-gray-400 italic text-sm">-</span>
@@ -243,6 +242,44 @@
   });
 
   displayRows();
+</script>
+
+<script>
+  // SweetAlert2 confirm for approving peminjaman
+  function confirmApprove(id) {
+    Swal.fire({
+      title: 'Yakin ingin menyetujui?',
+      text: 'Peminjaman akan disetujui dan pemohon akan mendapat notifikasi.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Setujui',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '<?= base_url("admin/peminjaman/approve/"); ?>' + id;
+      }
+    });
+  }
+
+  // SweetAlert2 confirm for finishing peminjaman
+  function confirmFinish(id) {
+    Swal.fire({
+      title: 'Yakin ingin menyelesaikan?',
+      text: 'Status ruangan akan dikembalikan setelah menyelesaikan peminjaman.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Selesai',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '<?= base_url("admin/peminjaman/finish/"); ?>' + id;
+      }
+    });
+  }
 </script>
 
 </body>

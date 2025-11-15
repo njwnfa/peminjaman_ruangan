@@ -55,7 +55,7 @@
             <h5 class="text-xl font-bold"><?= $total_peminjaman; ?></h5>
             <a href="<?= base_url('admin/peminjaman'); ?>" class="text-blue-600 text-sm hover:underline">Lihat Detail &gt;</a>
           </div>
-          <div class="w-12 h-12 flex items-center justify-center rounded-full bg-green-600 text-white">
+          <div class="w-12 h-12 flex items-center justify-center rounded-full bg-red-600 text-white">
             <i class="fas fa-clipboard-check"></i>
           </div>
         </div>
@@ -73,9 +73,45 @@
         </div>
 
       </div>
+      <!-- Additional content: overview chart + recent activity -->
+      <div class="mt-6 grid gap-6">
+        <div class="lg:col-span-2 bg-white shadow rounded-xl p-5">
+          <h6 class="text-sm text-gray-500">Rangkuman</h6>
+          <div class="mt-4" style="height:260px">
+            <canvas id="overviewChart"></canvas>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 </div>
 
 </body>
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  (function(){
+    const canvas = document.getElementById('overviewChart');
+    if (!canvas) return;
+    const data = <?php echo json_encode([(int)$total_user, (int)$total_ruangan, (int)$total_peminjaman, (int)$total_rekap]); ?>;
+    const labels = ['Users','Ruangan','Peminjaman','Rekap'];
+    const ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Jumlah',
+          data: data,
+          backgroundColor: ['#3B82F6','#10B981','#dc2626','#eab308']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  })();
+</script>

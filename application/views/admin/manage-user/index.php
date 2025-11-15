@@ -54,6 +54,7 @@
                 <th class="px-4 py-2 border">#</th>
                 <th class="px-4 py-2 border">Nama</th>
                 <th class="px-4 py-2 border">Email</th>
+                <th class="px-4 py-2 border">Telegram ID</th>
                 <th class="px-4 py-2 border">Role</th>
                 <th class="px-4 py-2 border">Dibuat</th>
                 <th class="px-4 py-2 border">Aksi</th>
@@ -66,6 +67,7 @@
                     <td class="px-4 py-2 border text-center"><?= $no++; ?></td>
                     <td class="px-4 py-2 border"><?= $u->nama; ?></td>
                     <td class="px-4 py-2 border"><?= $u->email; ?></td>
+                    <td class="px-4 py-2 border"><?= htmlspecialchars($u->telegram_chat_id ?? '-'); ?></td>
                     <td class="px-4 py-2 border text-center">
                       <form action="<?= base_url('user/update_role/'.$u->id); ?>" method="post">
                         <select name="role" onchange="this.form.submit()" class="border rounded p-1 text-sm">
@@ -78,6 +80,10 @@
                       <?= date('d M Y H:i', strtotime($u->created_at)); ?>
                     </td>
                     <td class="px-4 py-2 border text-center space-x-2">
+                      <button type="button" onclick='editUser(<?= $u->id; ?>, <?= json_encode($u->nama); ?>, <?= json_encode($u->email); ?>, <?= json_encode($u->telegram_chat_id ?? ''); ?>, <?= json_encode($u->role); ?>)' 
+                         class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                        <i class="fas fa-edit"></i>
+                      </button>
                       <button onclick="confirmDelete(<?= $u->id; ?>)" 
                          class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
                         <i class="fas fa-trash"></i>
@@ -109,13 +115,18 @@
 <!-- Modal Tambah User -->
 <div id="addUserModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
   <div class="bg-white rounded-xl w-full max-w-md p-6 shadow-xl">
-    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+    <h2 id="modalTitle" class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
       <i class="fas fa-user-plus mr-2 text-blue-600"></i> Tambah Pengguna Baru
     </h2>
-    <form action="<?= base_url('user/add'); ?>" method="post">
+    <form id="userForm" action="<?= base_url('user/add'); ?>" method="post">
+      <input type="hidden" name="id" id="userId" value="">
       <div class="mb-3">
         <label class="block text-sm font-medium mb-1">Nama</label>
         <input type="text" name="nama" class="w-full border p-2 rounded" required>
+      </div>
+      <div class="mb-3">
+        <label class="block text-sm font-medium mb-1">Telegram Chat ID</label>
+        <input type="text" name="telegram_chat_id" id="telegram_chat_id" inputmode="numeric" pattern="\d*" class="w-full border p-2 rounded" placeholder="Contoh: 123456789">
       </div>
       <div class="mb-3">
         <label class="block text-sm font-medium mb-1">Email</label>
@@ -147,19 +158,57 @@
 </div>
 
 <script>
+  // SweetAlert2 for nicer confirmation dialogs
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
   // === Modal Logic ===
   $('#openAddModal').on('click', function() {
+    // prepare form for adding
+    $('#userForm').attr('action', '<?= base_url('user/add'); ?>');
+    $('#userId').val('');
+    $('#userForm input[name="nama"]').val('');
+    $('#userForm input[name="email"]').val('');
+    $('#userForm input[name="password"]').val('');
+    $('#userForm input[name="telegram_chat_id"]').val('');
+    $('#userForm select[name="role"]').val('user');
+    $('#modalTitle').html('<i class="fas fa-user-plus mr-2 text-blue-600"></i> Tambah Pengguna Baru');
     $('#addUserModal').removeClass('hidden');
   });
   $('#closeAddModal').on('click', function() {
     $('#addUserModal').addClass('hidden');
   });
 
-  // === Konfirmasi Hapus ===
+  // === Konfirmasi Hapus (SweetAlert2) ===
   function confirmDelete(id) {
-    if (confirm('Yakin ingin menghapus user ini?')) {
-      window.location.href = '<?= base_url('user/delete/'); ?>' + id;
-    }
+    Swal.fire({
+      title: 'Yakin?',
+      text: 'Aksi ini akan menghapus user secara permanen.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Hapus',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '<?= base_url('user/delete/'); ?>' + id;
+      }
+    });
+  }
+
+  // === Edit User (prefill modal) ===
+  function editUser(id, name, email, telegram, role) {
+    $('#userForm').attr('action', '<?= base_url("user/update/"); ?>' + id);
+    $('#userId').val(id);
+    $('#userForm input[name="nama"]').val(name || '');
+    $('#userForm input[name="email"]').val(email || '');
+    // Do not prefill password for security
+    $('#userForm input[name="password"]').val('');
+    $('#userForm input[name="telegram_chat_id"]').val(telegram || '');
+    $('#userForm select[name="role"]').val(role || 'user');
+    $('#modalTitle').html('<i class="fas fa-user-plus mr-2 text-blue-600"></i> Edit Pengguna');
+    $('#addUserModal').removeClass('hidden');
   }
 
   const rows = document.querySelectorAll("tbody tr");

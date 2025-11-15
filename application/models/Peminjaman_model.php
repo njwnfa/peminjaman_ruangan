@@ -16,29 +16,25 @@ class Peminjaman_model extends CI_Model {
     }
 
     /**
-     * Mengecek apakah waktu yang diminta tersedia (tidak bentrok)
      *
-     * @param int $id_ruangan ID ruangan yang akan dicek
-     * @param string $start_time Waktu mulai (format 'Y-m-d H:i:s')
-     * @param string $end_time Waktu selesai (format 'Y-m-d H:i:s')
-     * @return bool TRUE jika tersedia, FALSE jika bentrok
+     * @param int 
+     * @param string 
+     * @param string 
+     * @return bool
      */
     public function is_waktu_tersedia($id_ruangan, $start_time, $end_time) {
         
         $this->db->where('id_ruangan', $id_ruangan);
         
+        // Cek bentrok hanya dengan status 'menunggu' atau 'disetujui'
         $this->db->where_in('status', ['menunggu', 'disetujui']);
-
-        // Logika Pengecekan Overlap (Bentrok):
-        // (StartA < EndB) AND (EndA > StartB)
-        // (WaktuMulai_Lama < WaktuSelesai_Baru) AND (WaktuSelesai_Lama > WaktuMulai_Baru)
         
+        // Logika pengecekan tumpang tindih waktu
         $this->db->where('tanggal_mulai <', $end_time);
         $this->db->where('tanggal_selesai >', $start_time);
 
         $query = $this->db->get($this->_table);
 
-        // Jika query menghasilkan 0 baris, berarti TIDAK ADA BENTROK (tersedia)
         return ($query->num_rows() == 0);
     }
     
@@ -48,15 +44,10 @@ class Peminjaman_model extends CI_Model {
         $this->db->join('users', 'users.id = peminjaman.id_user');
         $this->db->join('ruangan', 'ruangan.id_ruangan = peminjaman.id_ruangan');
         
-        // ==== TAMBAHKAN BARIS INI ====
-        // Hanya tampilkan yang statusnya 'menunggu' atau 'disetujui'
         $this->db->where_in('peminjaman.status', ['menunggu', 'disetujui']);
-        // =============================
 
-        // 1. Prioritaskan status 'menunggu' (diberi nilai 1)
         $this->db->order_by("CASE WHEN peminjaman.status = 'menunggu' THEN 1 ELSE 2 END", "ASC");
         
-        // 2. Urutkan berdasarkan tanggal dibuat (yang terbaru dulu)
         $this->db->order_by('peminjaman.created_at', 'DESC');
 
         $query = $this->db->get();
@@ -64,7 +55,6 @@ class Peminjaman_model extends CI_Model {
     }
 
     /**
-     * ==== TAMBAHKAN METHOD INI ====
      *
      * Mengambil satu data peminjaman berdasarkan ID
      */
@@ -74,7 +64,6 @@ class Peminjaman_model extends CI_Model {
     }
 
     /**
-     * ==== TAMBAHKAN METHOD INI ====
      *
      * Mengupdate data peminjaman
      */
@@ -90,15 +79,16 @@ class Peminjaman_model extends CI_Model {
         $this->db->join('ruangan', 'ruangan.id_ruangan = peminjaman.id_ruangan');
         
         // Filter utama: SELESAI ATAU DITOLAK
-        $this->db->where_in('peminjaman.status', ['selesai', 'ditolak']); // <-- INI PERUBAHANNYA
+        $this->db->where_in('peminjaman.status', ['selesai', 'ditolak']);
         
-        // Filter Waktu (Kita filter berdasarkan KAPAN DIAJUKAN, bukan kapan selesai)
+        // Filter Waktu (Berdasarkan KAPAN DIAJUKAN)
         $this->db->where('MONTH(peminjaman.created_at)', $bulan);
         $this->db->where('YEAR(peminjaman.created_at)', $tahun);
         
-        $this->db->order_by('peminjaman.created_at', 'DESC'); // Urutkan berdasarkan tanggal pengajuan
+        $this->db->order_by('peminjaman.created_at', 'DESC');
         
         $query = $this->db->get();
         return $query->result();
     }
+
 }

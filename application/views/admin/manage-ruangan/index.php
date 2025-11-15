@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
@@ -88,11 +89,10 @@
                         <i class="fas fa-edit"></i>
                       </button>
 
-                      <a href="<?= base_url('admin/ruangan/delete/'.$r->id_ruangan); ?>" 
-                        onclick="return confirm('Yakin ingin menghapus ruangan ini?')" 
+                      <button type="button" onclick="confirmDelete(<?= $r->id_ruangan; ?>)" 
                         class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
                         <i class="fas fa-trash"></i>
-                      </a>
+                      </button>
                     </td>
 
                   </tr>
@@ -246,6 +246,26 @@
   });
 
   displayRows();
+</script>
+
+<script>
+  // Konfirmasi hapus menggunakan SweetAlert2
+  function confirmDelete(id) {
+    Swal.fire({
+      title: 'Yakin ingin menghapus?',
+      text: 'Aksi ini akan menghapus data ruangan secara permanen.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Hapus',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '<?= base_url("admin/ruangan/delete/"); ?>' + id;
+      }
+    });
+  }
 </script>
 
 </body>

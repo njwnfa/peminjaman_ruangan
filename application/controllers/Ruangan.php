@@ -38,10 +38,6 @@ class Ruangan extends CI_Controller {
         $this->load->view('layouts/footer');
     }
 
-    /**
-     * ==== TAMBAHKAN METHOD INI ====
-     * * Method untuk menyimpan data peminjaman baru dari form modal
-     */
     public function store_peminjaman() {
         
         // 1. Atur Rules Validasi
@@ -59,42 +55,50 @@ class Ruangan extends CI_Controller {
             $this->session->set_flashdata('error', 'Data tidak lengkap. Gagal mengajukan peminjaman.');
             redirect('ruangan/index');
         } else {
-            // Jika validasi sukses
+            // 3. Ambil ID User dari session
+            $user_id = $this->session->userdata('user_id'); // Pastikan key 'user_id' Sesuai
             
-            // 3. Gabungkan Tanggal dan Waktu
-            $tgl_mulai = $this->input->post('tanggal_mulai_date') . ' ' . $this->input->post('jam_mulai_time') . ':00';
-            $tgl_selesai = $this->input->post('tanggal_selesai_date') . ' ' . $this->input->post('jam_selesai_time') . ':00';
-            $id_ruangan = $this->input->post('id_ruangan');
-            
-            // 4. Cek Ketersediaan Waktu (Jadwal Bentrok)
-            // Kita panggil method dari Peminjaman_model
-            if ($this->Peminjaman_model->is_waktu_tersedia($id_ruangan, $tgl_mulai, $tgl_selesai)) {
-                
-                // 5. Jika Tersedia, Siapkan Data untuk Disimpan
-                $data = [
-                    'id_user'       => $this->session->userdata('user_id'),
-                    'id_ruangan'    => $id_ruangan,
-                    'keperluan'     => $this->input->post('keperluan'),
-                    'nama_dosen'    => $this->input->post('nama_dosen'),
-                    'tanggal_mulai' => $tgl_mulai,
-                    'tanggal_selesai' => $tgl_selesai,
-                    'status'        => 'menunggu' // Status awal
-                ];
+            // 4. Panggil Model untuk cek apakah user punya pinjaman aktif
+            $adaPeminjamanAktif = $this->Peminjaman_model->cek_peminjaman_aktif($user_id);
 
-                // 6. Simpan ke Database via Model
-                if ($this->Peminjaman_model->save($data)) {
-                    $this->session->set_flashdata('success', 'Pengajuan peminjaman berhasil dikirim. Mohon tunggu konfirmasi admin.');
+            if ($adaPeminjamanAktif) {
+                // JIKA SUDAH ADA (return true): Tolak pengajuan baru
+                $this->session->set_flashdata('error', 'Anda sudah memiliki 1 peminjaman yang sedang diproses (menunggu) atau disetujui. Harap tunggu hingga peminjaman tersebut selesai atau ditolak.');
+                redirect('ruangan/index');
+            
+            } else {
+                
+                // 5. Gabungkan Tanggal dan Waktu
+                $tgl_mulai = $this->input->post('tanggal_mulai_date') . ' ' . $this->input->post('jam_mulai_time') . ':00';
+                $tgl_selesai = $this->input->post('tanggal_selesai_date') . ' ' . $this->input->post('jam_selesai_time') . ':00';
+                $id_ruangan = $this->input->post('id_ruangan');
+                
+                if ($this->Peminjaman_model->is_waktu_tersedia($id_ruangan, $tgl_mulai, $tgl_selesai)) {
+                    
+                    // 7. Jika Tersedia, Siapkan Data untuk Disimpan
+                    $data = [
+                        'id_user'       => $user_id, 
+                        'id_ruangan'    => $id_ruangan,
+                        'keperluan'     => $this->input->post('keperluan'),
+                        'nama_dosen'    => $this->input->post('nama_dosen'),
+                        'tanggal_mulai' => $tgl_mulai,
+                        'tanggal_selesai' => $tgl_selesai,
+                        'status'        => 'menunggu'
+                    ];
+
+                    if ($this->Peminjaman_model->save($data)) { 
+                        $this->session->set_flashdata('success', 'Pengajuan peminjaman berhasil dikirim. Mohon tunggu konfirmasi admin.');
+                    } else {
+                        $this->session->set_flashdata('error', 'Gagal menyimpan data ke database.');
+                    }
+
                 } else {
-                    $this->session->set_flashdata('error', 'Gagal menyimpan data ke database.');
+                    $this->session->set_flashdata('error', 'Gagal! Ruangan sudah dibooking pada rentang waktu tersebut.');
                 }
 
-            } else {
-                // Jika jadwal bentrok
-                $this->session->set_flashdata('error', 'Gagal! Ruangan sudah dibooking pada rentang waktu tersebut.');
+                // 9. Redirect kembali ke halaman daftar ruangan
+                redirect('ruangan/index');
             }
-
-            // 7. Redirect kembali ke halaman daftar ruangan
-            redirect('ruangan/index');
         }
     }
 

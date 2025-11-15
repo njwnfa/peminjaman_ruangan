@@ -6,13 +6,14 @@
   <link rel="icon" href="<?= base_url('assets/images/pilates.png'); ?>" type="image/png">
   <title>Register</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="h-screen w-screen font-sans">
+<body class="min-h-screen w-screen font-sans bg-gray-50">
 
-  <div class="flex h-screen w-full">
+  <div class="min-h-screen grid grid-cols-1 md:grid-cols-2">
     <!-- Bagian Register -->
-    <div class="flex flex-1 justify-center items-center p-10 bg-white">
-      <div class="w-full max-w-sm text-center">
+    <div class="flex justify-center items-center px-6 py-8 md:p-10 bg-white">
+      <div class="w-full max-w-md text-center overflow-y-auto">
 
         <!-- Logo -->
         <img 
@@ -55,6 +56,32 @@
                 required 
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg 
                        focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+              >
+            </div>
+
+            <div class="p-3 bg-blue-50 text-blue-700 rounded-lg text-sm text-left">
+              <p class="font-semibold mb-2"><i class="fas fa-info-circle"></i> Notifikasi Telegram</p>
+              <p class="text-xs">
+                Dapatkan notifikasi status peminjaman via Telegram.
+                Cari bot <strong>@userinfobot</strong> di Telegram, mulai chat, dan salin <strong>"Id"</strong> Anda ke sini lalu klik link dibawah untuk mendapatkan akses notifikasi.
+              </p>
+              <a href="https://t.me/PilaatessBot" target="_blank" 
+                class="text-indigo-600 font-semibold underline hover:text-indigo-800">
+                Pilates Bot
+              </a>
+            </div>
+
+            <div class="text-left">
+              <label class="block mb-2 text-sm font-semibold">Telegram Chat ID</label>
+              <input 
+                  type="text" 
+                  name="telegram_chat_id"
+                  required
+                  inputmode="numeric"
+                  pattern="\d*"
+                  placeholder="Contoh: 123456789 (Hanya angka)" 
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg 
+                         focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
               >
             </div>
 
@@ -120,50 +147,55 @@
     </div>
 
     <!-- Bagian Gambar -->
-    <div class="flex-1 hidden md:block bg-cover bg-center rounded-r-2xl" 
-      style="background-image: url('<?= base_url("assets/images/register-bg.jpg"); ?>');">
+    <div class="hidden md:block bg-cover bg-center rounded-r-2xl" 
+      style="background-image: url('<?= base_url("assets/images/register-bg.jpg"); ?>'); min-height:100vh;">
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    const password = document.querySelector("input[name='password']");
-    const confirm = document.querySelector("input[name='password_confirm']");
-    const message = document.getElementById("passwordMessage");
-    const registerBtn = document.getElementById("registerBtn");
+    (function(){
+      const password = document.querySelector("input[name='password']");
+      const confirm = document.querySelector("input[name='password_confirm']");
+      const message = document.getElementById("passwordMessage");
+      const registerBtn = document.getElementById("registerBtn");
 
-    function checkPassword() {
-        if (confirm.value.length === 0) {
-        message.textContent = "";
-        registerBtn.disabled = true;
-        return;
-        }
-        if (password.value === confirm.value) {
-        message.textContent = "Password cocok ✔";
-        message.className = "text-sm mt-1 text-green-600";
-        registerBtn.disabled = false;
-        } else {
-        message.textContent = "Password tidak sama ✖";
-        message.className = "text-sm mt-1 text-red-600";
-        registerBtn.disabled = true;
-        }
-    }
+      function safeSet(el, fn) { if (el) fn(); }
 
-    password.addEventListener("keyup", checkPassword);
-    confirm.addEventListener("keyup", checkPassword);
-
-    <?php if ($this->session->flashdata('success')): ?>
-    Swal.fire({
-      icon: 'success',
-      title: 'Berhasil!',
-      text: '<?= $this->session->flashdata('success'); ?>',
-      confirmButtonText: 'OK'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = "<?= site_url('auth/login'); ?>";
+      function checkPassword() {
+          if (!confirm || !password || !message || !registerBtn) return;
+          if (confirm.value.length === 0) {
+            message.textContent = "";
+            registerBtn.disabled = true;
+            return;
+          }
+          if (password.value === confirm.value) {
+            message.textContent = "Password cocok ✔";
+            message.className = "text-sm mt-1 text-green-600";
+            registerBtn.disabled = false;
+          } else {
+            message.textContent = "Password tidak sama ✖";
+            message.className = "text-sm mt-1 text-red-600";
+            registerBtn.disabled = true;
+          }
       }
-    });
-  <?php endif; ?>
+
+      safeSet(password, () => password.addEventListener('input', checkPassword));
+      safeSet(confirm, () => confirm.addEventListener('input', checkPassword));
+
+      <?php if ($this->session->flashdata('success')): ?>
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '<?= $this->session->flashdata('success'); ?>',
+        confirmButtonText: 'OK'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "<?= site_url('auth/login'); ?>";
+        }
+      });
+      <?php endif; ?>
+    })();
   </script>
 </body>
 </html>
