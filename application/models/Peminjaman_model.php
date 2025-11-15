@@ -16,6 +16,20 @@ class Peminjaman_model extends CI_Model {
     }
 
     /**
+     * Mengecek apakah seorang user memiliki peminjaman yang masih aktif 
+     * (status 'menunggu' atau 'disetujui').
+     * @param int $id_user ID pengguna yang sedang login
+     * @return bool TRUE jika ada peminjaman aktif, FALSE jika tidak ada.
+     */
+    public function cek_peminjaman_aktif($id_user)
+    {
+        $this->db->where('id_user', $id_user);
+        $this->db->where_in('status', ['menunggu', 'disetujui']);
+        $query = $this->db->get($this->_table);
+        return ($query->num_rows() > 0);
+    }
+
+    /**
      *
      * @param int 
      * @param string 
@@ -37,6 +51,9 @@ class Peminjaman_model extends CI_Model {
 
         return ($query->num_rows() == 0);
     }
+    
+    // ... metode-metode lain seperti get_all_joined(), get_by_id(), update(), dll.
+    // ... (metode-metode di bawah ini tidak diubah dan tetap sama)
     
     public function get_all_joined() {
         $this->db->select('peminjaman.*, users.nama as nama_peminjam, ruangan.nama_ruangan');
