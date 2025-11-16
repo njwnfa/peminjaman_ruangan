@@ -27,6 +27,7 @@ class Ruangan extends CI_Controller {
     public function add() {
         $nama = $this->input->post('nama_ruangan', true);
         $kapasitas = $this->input->post('kapasitas', true);
+        $deskripsi = $this->input->post('deskripsi', true);
         $status = $this->input->post('status', true) ?? 'tersedia';
 
         // Pastikan folder upload ada
@@ -58,6 +59,7 @@ class Ruangan extends CI_Controller {
         $data = [
             'nama_ruangan' => $nama,
             'kapasitas'    => $kapasitas,
+            'deskripsi'    => $deskripsi,
             'status'       => $status,
             'gambar'       => $gambar,
             'created_at'   => date('Y-m-d H:i:s')
@@ -80,6 +82,7 @@ class Ruangan extends CI_Controller {
 
         $nama = $this->input->post('nama_ruangan', true);
         $kapasitas = $this->input->post('kapasitas', true);
+        $deskripsi = $this->input->post('deskripsi', true);
         $status = $this->input->post('status', true);
 
         // Upload gambar baru jika ada
@@ -109,6 +112,7 @@ class Ruangan extends CI_Controller {
         $data = [
             'nama_ruangan' => $nama,
             'kapasitas'    => $kapasitas,
+            'deskripsi'    => $deskripsi,
             'status'       => $status,
             'gambar'       => $gambar,
             'updated_at'   => date('Y-m-d H:i:s')

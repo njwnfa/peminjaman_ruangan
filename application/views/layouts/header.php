@@ -30,7 +30,7 @@
       <div class="hidden md:flex items-center space-x-6 font-medium">
         <a href="<?= base_url('#fitur') ?>" class="hover:text-indigo-600 transition">Fitur</a>
         <a href="<?= base_url('#cara-kerja') ?>" class="hover:text-indigo-600 transition">Cara Kerja</a>
-        <a href="<?= base_url('#testimoni') ?>" class="hover:text-indigo-600 transition">Testimoni</a>
+        <a href="<?= base_url('#our-team') ?>" class="hover:text-indigo-600 transition">Our Team</a>
         <a href="<?= base_url('#faq') ?>" class="hover:text-indigo-600 transition">FAQ</a>
         <a href="<?= base_url('#kontak') ?>" class="hover:text-indigo-600 transition">Kontak</a>
 

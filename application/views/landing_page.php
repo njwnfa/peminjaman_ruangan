@@ -44,7 +44,7 @@
       <div class="hidden md:flex items-center space-x-6 font-medium">
         <a href="#fitur" class="hover:text-indigo-600 transition">Fitur</a>
         <a href="#cara-kerja" class="hover:text-indigo-600 transition">Cara Kerja</a>
-        <a href="#testimoni" class="hover:text-indigo-600 transition">Testimoni</a>
+        <a href="#our-team" class="hover:text-indigo-600 transition">Our Team</a>
         <a href="#faq" class="hover:text-indigo-600 transition">FAQ</a>
         <a href="#kontak" class="hover:text-indigo-600 transition">Kontak</a>
 
@@ -188,14 +188,13 @@
 
 
   <!-- Testimoni -->
-  <section id="testimoni" class="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900">
+  <!-- <section id="testimoni" class="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900">
     <div class="max-w-6xl mx-auto px-6 text-center">
       <h3 class="text-4xl font-bold mb-16 text-gray-800 dark:text-white">
         Apa Kata Mereka?
       </h3>
 
       <div class="grid md:grid-cols-3 gap-10">
-        <!-- Card 1 -->
         <div class="p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-2">
           <div class="flex flex-col items-center">
             <img src="https://i.pravatar.cc/100?img=3" alt="Budi" class="w-20 h-20 rounded-full border-4 border-indigo-500 shadow-md mb-4">
@@ -205,7 +204,6 @@
           </div>
         </div>
 
-        <!-- Card 2 -->
         <div class="p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-2">
           <div class="flex flex-col items-center">
             <img src="https://i.pravatar.cc/100?img=5" alt="Dina" class="w-20 h-20 rounded-full border-4 border-indigo-500 shadow-md mb-4">
@@ -215,7 +213,6 @@
           </div>
         </div>
 
-        <!-- Card 3 -->
         <div class="p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-2">
           <div class="flex flex-col items-center">
             <img src="https://i.pravatar.cc/100?img=7" alt="Andi" class="w-20 h-20 rounded-full border-4 border-indigo-500 shadow-md mb-4">
@@ -226,8 +223,73 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
+
+  <!-- Our Team -->
+  <section id="our-team" class="py-20 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-6">
+      <h3 class="text-3xl font-bold text-center mb-12">Tim Kami</h3>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+        <!-- 10 anggota tim -->
+        <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
+          <img src="<?= base_url('assets/images/team/atika.jpeg'); ?>" alt="Atikah" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <h4 class="font-semibold text-indigo-600">Atikah Shobrina</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-300">P20637123006</p>
+        </div>
+
+        <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
+          <img src="<?= base_url('assets/images/team/fahira.jpeg'); ?>" alt="Fahira" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <h4 class="font-semibold text-indigo-600">Fahira Aura Nisa </h4>
+          <p class="text-sm text-gray-600 dark:text-gray-300">P20637123014</p>
+        </div>
+
+        <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
+          <img src="<?= base_url('assets/images/team/dimas.jpeg'); ?>" alt="Dimas" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <h4 class="font-semibold text-indigo-600">Dimas Hafiz Wiryawan</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-300">P20637123011</p>
+        </div>
+
+        <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
+          <img src="<?= base_url('assets/images/team/jazim.jpeg'); ?>" alt="Jazim" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <h4 class="font-semibold text-indigo-600">Jazim Shebrina K S</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-300">P20637123019</p>
+        </div>
+
+        <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
+          <img src="<?= base_url('assets/images/team/jean.jpeg'); ?>" alt="Jean" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <h4 class="font-semibold text-indigo-600">Jean Vashareyka Supriyadi</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-300">P20637123020</p>
+        </div>
+
+        <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
+          <img src="<?= base_url('assets/images/team/fadel.jpeg'); ?>" alt="Fadel" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <h4 class="font-semibold text-indigo-600">Muhammad Fadel Ardhana </h4>
+          <p class="text-sm text-gray-600 dark:text-gray-300">P20637123025</p>
+        </div>
+
+        <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
+          <img src="<?= base_url('assets/images/team/najwa.jpeg'); ?>" alt="Najwa" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <h4 class="font-semibold text-indigo-600">Najwa Medina Z.A.F</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-300">P20637123028</p>
+        </div>
+
+        <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
+          <img src="<?= base_url('assets/images/team/nur.jpeg'); ?>" alt="Nurazizah" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <h4 class="font-semibold text-indigo-600">Nurazizah</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-300">P20637123033</p>
+        </div>
+
+        <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
+          <img src="<?= base_url('assets/images/team/putri.jpeg'); ?>" alt="Putri" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <h4 class="font-semibold text-indigo-600">Putri Amelia</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-300">P20637123034</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
   <!-- FAQ -->
   <section id="faq" class="py-20 bg-white dark:bg-gray-900">
@@ -304,6 +366,14 @@
       gsap.from(card, {
         scrollTrigger: { trigger: card, start: "top 85%" },
         scale: 0.9, opacity: 0, duration: 0.8, delay: i * 0.2
+      });
+    });
+
+    // Team cards animation
+    gsap.utils.toArray(".team-card").forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: { trigger: card, start: "top 85%" },
+        y: 40, opacity: 0, duration: 0.8, delay: i * 0.06
       });
     });
 
