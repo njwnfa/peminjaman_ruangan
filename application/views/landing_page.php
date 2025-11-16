@@ -231,58 +231,58 @@
     <div class="max-w-7xl mx-auto px-6">
       <h3 class="text-3xl font-bold text-center mb-12">Tim Kami</h3>
 
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-        <!-- 10 anggota tim -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        
         <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
-          <img src="<?= base_url('assets/images/team/atika.jpeg'); ?>" alt="Atikah" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <img src="<?= base_url('assets/images/team/atika.jpeg'); ?>" alt="Atikah" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow object-cover" />
           <h4 class="font-semibold text-indigo-600">Atikah Shobrina</h4>
           <p class="text-sm text-gray-600 dark:text-gray-300">P20637123006</p>
         </div>
 
         <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
-          <img src="<?= base_url('assets/images/team/fahira.jpeg'); ?>" alt="Fahira" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <img src="<?= base_url('assets/images/team/fahira.jpeg'); ?>" alt="Fahira" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow object-cover" />
           <h4 class="font-semibold text-indigo-600">Fahira Aura Nisa </h4>
           <p class="text-sm text-gray-600 dark:text-gray-300">P20637123014</p>
         </div>
 
         <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
-          <img src="<?= base_url('assets/images/team/dimas.jpeg'); ?>" alt="Dimas" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <img src="<?= base_url('assets/images/team/dimas.jpeg'); ?>" alt="Dimas" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow object-cover" />
           <h4 class="font-semibold text-indigo-600">Dimas Hafiz Wiryawan</h4>
           <p class="text-sm text-gray-600 dark:text-gray-300">P20637123011</p>
         </div>
 
         <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
-          <img src="<?= base_url('assets/images/team/jazim.jpeg'); ?>" alt="Jazim" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <img src="<?= base_url('assets/images/team/jazim.jpeg'); ?>" alt="Jazim" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow object-cover" />
           <h4 class="font-semibold text-indigo-600">Jazim Shebrina K S</h4>
           <p class="text-sm text-gray-600 dark:text-gray-300">P20637123019</p>
         </div>
 
         <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
-          <img src="<?= base_url('assets/images/team/jean.jpeg'); ?>" alt="Jean" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <img src="<?= base_url('assets/images/team/jean.jpeg'); ?>" alt="Jean" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow object-cover" />
           <h4 class="font-semibold text-indigo-600">Jean Vashareyka Supriyadi</h4>
           <p class="text-sm text-gray-600 dark:text-gray-300">P20637123020</p>
         </div>
 
         <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
-          <img src="<?= base_url('assets/images/team/fadel.jpeg'); ?>" alt="Fadel" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <img src="<?= base_url('assets/images/team/fadel.jpeg'); ?>" alt="Fadel" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow object-cover" />
           <h4 class="font-semibold text-indigo-600">Muhammad Fadel Ardhana </h4>
           <p class="text-sm text-gray-600 dark:text-gray-300">P20637123025</p>
         </div>
 
         <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
-          <img src="<?= base_url('assets/images/team/najwa.jpeg'); ?>" alt="Najwa" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <img src="<?= base_url('assets/images/team/najwa.jpeg'); ?>" alt="Najwa" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow object-cover" />
           <h4 class="font-semibold text-indigo-600">Najwa Medina Z.A.F</h4>
           <p class="text-sm text-gray-600 dark:text-gray-300">P20637123028</p>
         </div>
 
         <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
-          <img src="<?= base_url('assets/images/team/nur.jpeg'); ?>" alt="Nurazizah" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <img src="<?= base_url('assets/images/team/nur.jpeg'); ?>" alt="Nurazizah" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow object-cover" />
           <h4 class="font-semibold text-indigo-600">Nurazizah</h4>
           <p class="text-sm text-gray-600 dark:text-gray-300">P20637123033</p>
         </div>
 
         <div class="team-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center shadow hover:shadow-2xl transition">
-          <img src="<?= base_url('assets/images/team/putri.jpeg'); ?>" alt="Putri" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow" />
+          <img src="<?= base_url('assets/images/team/putri.jpeg'); ?>" alt="Putri" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 shadow object-cover" />
           <h4 class="font-semibold text-indigo-600">Putri Amelia</h4>
           <p class="text-sm text-gray-600 dark:text-gray-300">P20637123034</p>
         </div>

@@ -39,13 +39,18 @@
                 <span class="font-semibold">Kapasitas:</span> <?= $r->kapasitas; ?> orang
               </p>
 
-              <p class="flex items-center text-gray-600 dark:text-gray-300 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.983 2.705a1 1 0 011.034 0l2.122 1.226a1 1 0 01.444.858v2.448a7.962 7.962 0 012.57 1.484l2.011-.58a1 1 0 01.926.268l1.5 1.5a1 1 0 01.268.926l-.58 2.011a7.962 7.962 0 011.484 2.57h2.448a1 1 0 01.858.444l1.226 2.122a1 1 0 010 1.034l-1.226 2.122a1 1 0 01-.858.444h-2.448a7.962 7.962 0 01-1.484 2.57l.58 2.011a1 1 0 01-.268.926l-1.5 1.5a1 1 0 01-.926.268l-2.011-.58a7.962 7.962 0 01-2.57 1.484v2.448a1 1 0 01-.444.858l-2.122 1.226a1 1 0 01-1.034 0l-2.122-1.226a1 1 0 01-.444-.858v-2.448a7.962 7.962 0 01-2.57-1.484l-2.011.58a1 1 0 01-.926-.268l-1.5-1.5a1 1 0 01-.268-.926l.58-2.011a7.962 7.962 0 01-1.484-2.57H2.705a1 1 0 01-.444-.858l-1.226-2.122a1 1 0 010-1.034l1.226-2.122a1 1 0 01.444-.858h2.448a7.962 7.962 0 011.484-2.57l-.58-2.011a1 1 0 01.268-.926l1.5-1.5a1 1 0 01.926-.268l2.011.58a7.962 7.962 0 012.57-1.484V4.789a1 1 0 01.444-.858l2.122-1.226z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span class="font-semibold">Deskripsi:</span> <?= !empty($r->deskripsi) ? substr($r->deskripsi, 0, 50) . '...' : 'Tidak ada deskripsi'; ?> 
-              </p>
+              <div class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                <div class="flex items-start">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500 mr-2 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.983 2.705a1 1 0 011.034 0l2.122 1.226a1 1 0 01.444.858v2.448a7.962 7.962 0 012.57 1.484l2.011-.58a1 1 0 01.926.268l1.5 1.5a1 1 0 01.268.926l-.58 2.011a7.962 7.962 0 011.484 2.57h2.448a1 1 0 01.858.444l1.226 2.122a1 1 0 010 1.034l-1.226 2.122a1 1 0 01-.858.444h-2.448a7.962 7.962 0 01-1.484 2.57l.58 2.011a1 1 0 01-.268.926l-1.5 1.5a1 1 0 01-.926.268l-2.011-.58a7.962 7.962 0 01-2.57 1.484v2.448a1 1 0 01-.444.858l-2.122 1.226a1 1 0 01-1.034 0l-2.122-1.226a1 1 0 01-.444-.858v-2.448a7.962 7.962 0 01-2.57-1.484l-2.011.58a1 1 0 01-.926-.268l-1.5-1.5a1 1 0 01-.268-.926l.58-2.011a7.962 7.962 0 01-1.484-2.57H2.705a1 1 0 01-.444-.858l-1.226-2.122a1 1 0 010-1.034l1.226-2.122a1 1 0 01.444-.858h2.448a7.962 7.962 0 011.484-2.57l-.58-2.011a1 1 0 01.268-.926l1.5-1.5a1 1 0 01.926-.268l2.011.58a7.962 7.962 0 012.57-1.484V4.789a1 1 0 01.444-.858l2.122-1.226z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <div>
+                    <div class="font-semibold">Deskripsi:</div>
+                    <div class="mt-1 text-gray-700 dark:text-gray-300 whitespace-pre-wrap"> <?= !empty($r->deskripsi) ? nl2br(htmlspecialchars($r->deskripsi)) : '<span class="italic text-gray-500">Tidak ada deskripsi</span>'; ?> </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="mt-6">
